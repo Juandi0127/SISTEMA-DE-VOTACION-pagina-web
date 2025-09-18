@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados Parciales</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="top-bar">
+        <a href="/logout_admin" class="admin-button">Cerrar sesión admin</a>
+    </div>
+
+    <div class="login">
+        <h1>Resultados Parciales</h1>
+
+        <canvas id="grafico" width="400" height="200"></canvas>
+        <script>
+            const labels = JSON.parse('{{ labels | tojson | safe }}');
+            const data = JSON.parse('{{ values | tojson | safe }}');
+
+            new Chart(document.getElementById('grafico'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Votos',
+                        data: data,
+                        backgroundColor: ['#4a77d4', '#67c23a', '#f39c12']
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+
+        <br><br>
+        <a href="/exportar_csv" class="btn">📥 Exportar CSV</a>
+        <a href="/exportar_json" class="btn">📥 Exportar JSON</a>
+    </div>
+</body>
+</html>
